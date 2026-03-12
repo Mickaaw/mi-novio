@@ -1,33 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yay! 🎉</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yesss ! 🎉</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="hearts-bg"></div>
+  <div id="hearts-bg"></div>
+  <div id="sparkles"></div>
 
-    <div class="container yes-container">
-        <h1 class="yes-title">Knew you would say yes! 🎉</h1>
-
-        <div class="gif-container">
-            <img id="cat-gif" src="https://media.tenor.com/eNHbizSfVb0AAAAj/lovemode-cute.gif" alt="celebrating">
-        </div>
-
-        <p class="yes-message">You just made me the happiest person! 💕</p>
+  <div class="card yes-card">
+    <h1 class="title" style="font-size:2.4rem">Yesss ! 🎉</h1>
+    <p class="subtitle">Tu as fait mon jour le plus heureux 🌹</p>
+    <div class="gif-wrap" style="width:200px;height:200px">
+      <img src="https://media.tenor.com/iChRH14u_HIAAAAM/milk-and-mocha-bear-cute.gif" alt="celebration" />
     </div>
+    <div class="yes-hearts">💕 💖 💗 💓 💞</div>
+    <p style="color:#888;font-size:1rem;font-weight:600;line-height:1.6">
+      Mi Amor, on va s'éclater ensemble !<br>Mil Besos Más 🌹
+    </p>
+  </div>
 
-    <audio id="bg-music" loop>
-        <source src="music/beabadoobee - Glue Song (Lyrics).mp3" type="audio/mpeg">
-    </audio>
-
-    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
-
-    <script src="yes-script.js"></script>
+  <script src="yes-script.js"></script>
 </body>
 </html>
