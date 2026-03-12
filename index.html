@@ -1,36 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my Valentine? 💕</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Amor 💕</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="hearts-bg"></div>
+  <div id="hearts-bg"></div>
+  <button id="music-btn" onclick="toggleMusic()">🔊</button>
+  <audio id="bg-music" loop src="music/song.mp3"></audio>
 
-    <div class="container">
-        <h1>Will you be my Valentine? 💕</h1>
-
-        <div class="gif-container">
-            <img id="cat-gif" src="https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif" alt="cute character">
-        </div>
-
-        <div class="buttons">
-            <button id="yes-btn" onclick="handleYesClick()">Yes</button>
-            <button id="no-btn" onclick="handleNoClick()">No</button>
-        </div>
-        <div id="tease-toast"></div>
+  <div class="card" id="main-card">
+    <p class="subtitle">✨ Un message rien que pour toi ✨</p>
+    <h1 class="title">Veux-tu être mi novio ?</h1>
+    <div class="gif-wrap">
+      <img id="main-gif" src="https://media.tenor.com/qyl20J82hZgAAAAM/me-and-him-both-in-love.gif" alt="kawaii couple" />
     </div>
+    <p class="question" id="question-text">💝 Dis-moi oui... s'il te plaît ?</p>
+    <div class="btn-row">
+      <button class="btn-yes" onclick="goYes()">Oui 💕</button>
+      <button class="btn-no" id="btn-no" onclick="clickNo()">Non 😒</button>
+    </div>
+  </div>
 
-    <audio id="bg-music" loop autoplay muted>
-        <source src="music/beabadoobee - Glue Song (Lyrics).mp3" type="audio/mpeg">
-    </audio>
-
-    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
-
-    <script src="script.js"></script>
+  <div id="toast"></div>
+  <script src="script.js"></script>
 </body>
 </html>
