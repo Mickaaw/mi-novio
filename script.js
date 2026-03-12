@@ -1,145 +1,88 @@
-const gifStages = [
-    "https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif",    // 0 normal
-    "https://media1.tenor.com/m/uDugCXK4vI4AAAAd/chiikawa-hachiware.gif",  // 1 confused
-    "https://media.tenor.com/f_rkpJbH1s8AAAAj/somsom1012.gif",             // 2 pleading
-    "https://media.tenor.com/OGY9zdREsVAAAAAj/somsom1012.gif",             // 3 sad
-    "https://media1.tenor.com/m/WGfra-Y_Ke0AAAAd/chiikawa-sad.gif",       // 4 sadder
-    "https://media.tenor.com/CivArbX7NzQAAAAj/somsom1012.gif",             // 5 devastated
-    "https://media.tenor.com/5_tv1HquZlcAAAAj/chiikawa.gif",               // 6 very devastated
-    "https://media1.tenor.com/m/uDugCXK4vI4AAAAC/chiikawa-hachiware.gif"  // 7 crying runaway
-]
+const GIFS = [
+  'https://media.tenor.com/qyl20J82hZgAAAAM/me-and-him-both-in-love.gif',
+  'https://media.tenor.com/Rs2Aq8BNw3sAAAAM/cute-couple-kiss.gif',
+  'https://media.tenor.com/ojw3M_GgUo4AAAAM/cute-couple-hug.gif',
+  'https://media.tenor.com/r-YmUnBECagAAAAM/cookieluvi-luvicookie.gif',
+  'https://media.tenor.com/tK8xX-Hs9QAAAAAM/peach-and-goma.gif',
+];
 
-const noMessages = [
-    "No",
-    "Are you positive? 🤔",
-    "Pookie please... 🥺",
-    "If you say no, I will be really sad...",
-    "I will be very sad... 😢",
-    "Please??? 💔",
-    "Don't do this to me...",
-    "Last chance! 😭",
-    "You can't catch me anyway 😜"
-]
+const NO_MESSAGES = [
+  "😟 C'est non ?! Ça fait mal...",
+  "🥺 Donne-moi une chance !",
+  "😭 Mais pourquooooi ?!",
+  "🙏 Allez, un tout petit oui ?",
+  "💔 Mon cœur est brisé...",
+  "😤 Ok ok... tu peux encore changer d'avis !",
+  "🐣 T'as pas le cœur de refuser ça ?",
+  "😩 Le bouton Oui est BIEN meilleur !",
+  "🌹 Je t'offrirai mil besos más, promis !",
+  "😿 Même les chats pleurent pour moi...",
+];
 
-const yesTeasePokes = [
-    "try saying no first... I bet you want to know what happens 😏",
-    "go on, hit no... just once 👀",
-    "you're missing out 😈",
-    "click no, I dare you 😏"
-]
+const QUESTIONS = [
+  "💝 Dis-moi oui... s'il te plaît ?",
+  "🥺 Non ? Vraiment ?!",
+  "😩 C'est ta dernière chance !",
+  "😭 J'y crois pas...",
+  "💔 Tu veux me faire pleurer ?",
+  "🙏 Pitié pitié pitié !",
+  "💌 Le bouton Oui est BIEN meilleur !",
+];
 
-let yesTeasedCount = 0
+let noCount = 0;
+let musicPlaying = false;
 
-let noClickCount = 0
-let runawayEnabled = false
-let musicPlaying = true
+// Cœurs flottants
+const heartsContainer = document.getElementById('hearts-bg');
+const HEART_EMOJIS = ['❤️','💕','💖','💗','💓','💞','💝','🌸','✨'];
+function spawnHeart() {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.textContent = HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+  const size = 14 + Math.random() * 18;
+  const dur = 6 + Math.random() * 8;
+  h.style.cssText = `left:${Math.random()*100}%;font-size:${size}px;animation-duration:${dur}s;animation-delay:${Math.random()*3}s`;
+  heartsContainer.appendChild(h);
+  setTimeout(() => h.remove(), (dur + 3) * 1000);
+}
+setInterval(spawnHeart, 400);
 
-const catGif = document.getElementById('cat-gif')
-const yesBtn = document.getElementById('yes-btn')
-const noBtn = document.getElementById('no-btn')
-const music = document.getElementById('bg-music')
+// Toast
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
 
-// Autoplay: audio starts muted (bypasses browser policy), unmute immediately
-music.muted = true
-music.volume = 0.3
-music.play().then(() => {
-    music.muted = false
-}).catch(() => {
-    // Fallback: unmute on first interaction
-    document.addEventListener('click', () => {
-        music.muted = false
-        music.play().catch(() => {})
-    }, { once: true })
-})
+// Bouton Non
+function clickNo() {
+  noCount++;
+  const btn = document.getElementById('btn-no');
+  btn.style.fontSize = Math.min(0.75 + noCount * 0.18, 3.5) + 'rem';
+  btn.style.padding = (0.6 + noCount * 0.1) + 'rem ' + (1.8 + noCount * 0.2) + 'rem';
+  document.getElementById('question-text').textContent = QUESTIONS[Math.min(noCount - 1, QUESTIONS.length - 1)];
+  const img = document.getElementById('main-gif');
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = GIFS[Math.min(noCount, GIFS.length - 1)];
+    img.style.opacity = '1';
+  }, 200);
+  showToast(NO_MESSAGES[Math.floor(Math.random() * NO_MESSAGES.length)]);
+}
 
+// Bouton Oui
+function goYes() {
+  window.location.href = 'yes.html';
+}
+
+// Musique
 function toggleMusic() {
-    if (musicPlaying) {
-        music.pause()
-        musicPlaying = false
-        document.getElementById('music-toggle').textContent = '🔇'
-    } else {
-        music.muted = false
-        music.play()
-        musicPlaying = true
-        document.getElementById('music-toggle').textContent = '🔊'
-    }
-}
-
-function handleYesClick() {
-    if (!runawayEnabled) {
-        // Tease her to try No first
-        const msg = yesTeasePokes[Math.min(yesTeasedCount, yesTeasePokes.length - 1)]
-        yesTeasedCount++
-        showTeaseMessage(msg)
-        return
-    }
-    window.location.href = 'yes.html'
-}
-
-function showTeaseMessage(msg) {
-    let toast = document.getElementById('tease-toast')
-    toast.textContent = msg
-    toast.classList.add('show')
-    clearTimeout(toast._timer)
-    toast._timer = setTimeout(() => toast.classList.remove('show'), 2500)
-}
-
-function handleNoClick() {
-    noClickCount++
-
-    // Cycle through guilt-trip messages
-    const msgIndex = Math.min(noClickCount, noMessages.length - 1)
-    noBtn.textContent = noMessages[msgIndex]
-
-    // Grow the Yes button bigger each time
-    const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize)
-    yesBtn.style.fontSize = `${currentSize * 1.35}px`
-    const padY = Math.min(18 + noClickCount * 5, 60)
-    const padX = Math.min(45 + noClickCount * 10, 120)
-    yesBtn.style.padding = `${padY}px ${padX}px`
-
-    // Shrink No button to contrast
-    if (noClickCount >= 2) {
-        const noSize = parseFloat(window.getComputedStyle(noBtn).fontSize)
-        noBtn.style.fontSize = `${Math.max(noSize * 0.85, 10)}px`
-    }
-
-    // Swap cat GIF through stages
-    const gifIndex = Math.min(noClickCount, gifStages.length - 1)
-    swapGif(gifStages[gifIndex])
-
-    // Runaway starts at click 5
-    if (noClickCount >= 5 && !runawayEnabled) {
-        enableRunaway()
-        runawayEnabled = true
-    }
-}
-
-function swapGif(src) {
-    catGif.style.opacity = '0'
-    setTimeout(() => {
-        catGif.src = src
-        catGif.style.opacity = '1'
-    }, 200)
-}
-
-function enableRunaway() {
-    noBtn.addEventListener('mouseover', runAway)
-    noBtn.addEventListener('touchstart', runAway, { passive: true })
-}
-
-function runAway() {
-    const margin = 20
-    const btnW = noBtn.offsetWidth
-    const btnH = noBtn.offsetHeight
-    const maxX = window.innerWidth - btnW - margin
-    const maxY = window.innerHeight - btnH - margin
-
-    const randomX = Math.random() * maxX + margin / 2
-    const randomY = Math.random() * maxY + margin / 2
-
-    noBtn.style.position = 'fixed'
-    noBtn.style.left = `${randomX}px`
-    noBtn.style.top = `${randomY}px`
-    noBtn.style.zIndex = '50'
+  const audio = document.getElementById('bg-music');
+  const btn = document.getElementById('music-btn');
+  if (musicPlaying) { audio.pause(); btn.textContent = '🔇'; }
+  else { audio.play().catch(() => {}); btn.textContent = '🔊'; }
+  musicPlaying = !musicPlaying;
 }
